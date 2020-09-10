@@ -1,0 +1,25 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql-api-product
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: api2020
+      MYSQL_USER: api
+      MYSQL_PASSWORD: api2020
+      MYSQL_DATABASE: product_sku
+    volumes:
+        - ./data:/var/lib/mysql:rw
+  app:
+    container_name: app
+    working_dir: /usr/src/app
+    volumes:
+        - ./:/usr/src/app
+    image: node:12.18.0
+    command: "sh init.sh"
+    ports:
+    - "3000:3000" # <host-port>:<container-port> to listen to, so anything running on port 3000 of the container will map to port 3000 on our localhost
+    depends_on:
+      - mysql

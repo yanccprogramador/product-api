@@ -1,0 +1,1 @@
+docker exec app npm run setup
