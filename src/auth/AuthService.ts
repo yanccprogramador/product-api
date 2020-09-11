@@ -4,13 +4,11 @@ import { OrmRepository } from 'typeorm-typedi-extensions';
 
 import { User } from '../api/models/User';
 import { UserRepository } from '../api/repositories/UserRepository';
-import { Logger, LoggerInterface } from '../decorators/Logger';
 
 @Service()
 export class AuthService {
 
     constructor(
-        @Logger(__filename) private log: LoggerInterface,
         @OrmRepository() private userRepository: UserRepository
     ) { }
 
@@ -18,7 +16,6 @@ export class AuthService {
         const authorization = req.header('authorization');
 
         if (authorization && authorization.split(' ')[0] === 'Basic') {
-            this.log.info('Credentials provided by the client');
             const decodedBase64 = Buffer.from(authorization.split(' ')[1], 'base64').toString('ascii');
             const username = decodedBase64.split(':')[0];
             const password = decodedBase64.split(':')[1];
@@ -27,7 +24,6 @@ export class AuthService {
             }
         }
 
-        this.log.info('No credentials provided by the client');
         return undefined;
     }
 

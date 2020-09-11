@@ -22,7 +22,7 @@ export class SkuSizeProduct {
     @Column()
     public skuSizeId: number;
 
-    @OneToOne(type => SkuSize, skuSize => skuSize.id)
+    @OneToOne(type => SkuSize, skuSize => skuSize.size)
     @JoinColumn({ name: 'skuSizeId' })
     public skuSize: SkuSize;
 

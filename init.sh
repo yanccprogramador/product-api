@@ -1,5 +1,5 @@
-if ![ -d  "./node_modules" ]; then
-docker exec app npm i -d --build-from-resource
+if [ ! -d  "./node_modules" ]; then
+npm i -d --build-from-resource
+sh setup.sh
 fi
-
-docker exec app npm start serve
+npm start serve

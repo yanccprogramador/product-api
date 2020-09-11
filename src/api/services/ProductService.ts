@@ -13,11 +13,12 @@ export class ProductService {
     ) { }
 
     public find(): Promise<Product[]> {
-        return this.productRepository.find();
+        return this.productRepository.find({ relations: ['sizes', 'sizes.skuSize'] });
     }
 
     public findOne(id: number): Promise<Product | undefined> {
-        return this.productRepository.findOne({ id });
+        return this.productRepository.findOne({ id },
+            { relations: ['sizes', 'sizes.skuSize'] });
     }
 
     public async create(product: Product): Promise<Product> {
@@ -30,10 +31,9 @@ export class ProductService {
         return this.productRepository.save(product);
     }
 
-    public async delete(id: number): Promise<void> {
-        await this.skuSizeProductRepository.delete({productId : id});
-        await this.productRepository.delete(id);
-        return;
+    public async delete(id: number): Promise<any> {
+        await this.skuSizeProductRepository.delete({productId: id});
+        return await this.productRepository.delete(id);
     }
 
 }

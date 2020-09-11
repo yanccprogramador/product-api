@@ -1,6 +1,7 @@
 import { IsNotEmpty } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Sku } from './Sku';
+import { SkuSizeProduct } from './SkuSizeProduct';
 
 @Entity()
 export class Product {
@@ -26,6 +27,9 @@ export class Product {
     @OneToOne(type => Sku, sku => sku.id)
     @JoinColumn({ name: 'skuId' })
     public sku: Sku;
+
+    @OneToMany(type => SkuSizeProduct, size => size.product)
+    public sizes: SkuSizeProduct[];
 
     public toString(): string {
         return `${this.name}`;

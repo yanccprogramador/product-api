@@ -1,21 +1,10 @@
-import {  IsNumber, ValidateNested, IsNotEmpty } from 'class-validator';
 import {
   Get, JsonController,
 } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
-import { SkuSize } from '../models/SkuSize';
 import { SkuService } from '../services/SkuService';
 import { Sku } from '../models/Sku';
-
-export class SkuResponse  {
-    @IsNumber()
-    public id: number;
-    @IsNotEmpty()
-    public name: string;
-
-    @ValidateNested()
-    public sizes: SkuSize[];
-}
+import { SkuResponse } from './responses/SkuResponse';
 
 @JsonController('/sku')
 @OpenAPI({ })

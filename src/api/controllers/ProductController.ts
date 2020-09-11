@@ -1,4 +1,3 @@
-import { IsNotEmpty, IsNumber, IsUUID, ValidateNested } from 'class-validator';
 import {
     Authorized, Body, Delete, Get, JsonController, OnUndefined, Param, Post, Put
 } from 'routing-controllers';
@@ -7,32 +6,9 @@ import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 import { ProductNotFoundError } from '../errors/ProductNotFoundError';
 import { Product } from '../models/Product';
 import { ProductService } from '../services/ProductService';
-import { UserResponse } from './UserController';
-import { SkuSizeProduct } from '../models/SkuSizeProduct';
+
 import { SkuSizeProductService } from '../services/SkuSizeProductService';
-
-class BaseProduct {
-    @IsNotEmpty()
-    public name: string;
-
-    @IsNumber()
-    public value: number;
-}
-
-export class ProductResponse extends BaseProduct {
-    @IsUUID()
-    public id: string;
-
-    @ValidateNested()
-    public user: UserResponse;
-}
-
-class CreateProductBody extends BaseProduct {
-    @IsNotEmpty()
-    public skuSizes: SkuSizeProduct[];
-    @IsNotEmpty()
-    public skuId: number;
-}
+import { ProductResponse, CreateProductBody } from './responses/ProductResponse';
 
 @Authorized()
 @JsonController('/products')
@@ -61,7 +37,7 @@ export class ProductController {
     @ResponseSchema(ProductResponse)
     public async create(@Body({ required: true }) body: CreateProductBody): Promise<Product> {
         const product = new Product();
-        // product.description = body.description;
+        product.description = body.description;
         product.name = body.name;
         product.value = body.value;
         product.skuId = body.skuId;
@@ -77,11 +53,12 @@ export class ProductController {
     public async update(@Param('id') id: number, @Body() body: CreateProductBody): Promise<Product> {
         const product = new Product();
         product.value = body.value;
-        // product. description = body.description;
+        product. description = body.description;
         product.name = body.name;
 
         const createdProduct =  await this.productService.update(id, product);
-        body.skuSizes.map(el => el.productId = createdProduct.id);
+        body.skuSizes.map(el => el.productId = id);
+        this.skuSizeProductService.saveAll(body.skuSizes);
         return createdProduct;
     }
 
