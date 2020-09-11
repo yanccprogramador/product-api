@@ -6,9 +6,7 @@ For init
 ```bash
 docker-compose up
 ```
-
-After start run
-
+Para iniciar
 ```bash
-sh.setup.sh
+docker-compose up
 ```

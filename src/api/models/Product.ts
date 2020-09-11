@@ -2,6 +2,7 @@ import { IsNotEmpty } from 'class-validator';
 import { Column, Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Sku } from './Sku';
 import { SkuSizeProduct } from './SkuSizeProduct';
+import { SkuSize } from './SkuSize';
 
 @Entity()
 export class Product {
